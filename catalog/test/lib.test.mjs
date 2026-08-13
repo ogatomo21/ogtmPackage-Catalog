@@ -62,6 +62,40 @@ test("buildCatalog obtains README, release data and APK digest", async () => {
   assert.equal(catalog.apps[0].iconUrl, "https://raw.githubusercontent.com/owner/repo/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp");
 });
 
+test("same-named APK assets from different apps use separate temporary files", async () => {
+  const apkBytes = Buffer.from("apk fixture");
+  const apps = [
+    { packageName: "net.ogatomo.first", displayName: "First", shortDescription: "First app", repository: "owner/first" },
+    { packageName: "net.ogatomo.second", displayName: "Second", shortDescription: "Second app", repository: "owner/second" }
+  ];
+  const fetchImpl = async (url) => {
+    const repository = url.includes("owner/first") ? "first" : "second";
+    if (url.includes("/releases?")) return Response.json([{ draft: false, prerelease: false, published_at: "2026-08-13T00:00:00Z", body: "", assets: [{ name: "app-release.apk", browser_download_url: `https://download.example/${repository}/app-release.apk` }] }]);
+    if (url.endsWith("/readme")) return Response.json({ content: Buffer.from(`# ${repository}`).toString("base64"), encoding: "base64" });
+    if (url.endsWith("/repos/owner/first") || url.endsWith("/repos/owner/second")) return Response.json({ default_branch: "main" });
+    throw new Error(url);
+  };
+  const paths = [];
+  const catalog = await buildCatalog({ apps }, {
+    fetchImpl,
+    downloadApkImpl: async (_fetch, _url, file) => {
+      paths.push(file);
+      await writeFile(file, apkBytes);
+      return { sizeBytes: apkBytes.length, sha256: createHash("sha256").update(apkBytes).digest("hex") };
+    },
+    inspectApkImpl: (file) => ({
+      packageName: file.includes("net.ogatomo.first-") ? "net.ogatomo.first" : "net.ogatomo.second",
+      versionName: "1.0",
+      versionCode: 1,
+      minSdk: 23,
+      targetSdk: 36,
+      nativeAbis: []
+    })
+  });
+  assert.equal(new Set(paths).size, 2);
+  assert.deepEqual(catalog.apps.map((app) => app.packageName), apps.map((app) => app.packageName));
+});
+
 test("the default icon URL uses the repository default branch", () => {
   assert.equal(defaultIconUrl("owner/repo", "main"), "https://raw.githubusercontent.com/owner/repo/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp");
 });

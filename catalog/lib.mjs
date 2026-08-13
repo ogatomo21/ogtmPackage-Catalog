@@ -177,7 +177,7 @@ export async function buildCatalog(source, options = {}) {
       const [descriptionMarkdown, variants] = await Promise.all([
         fetchReadme(fetchImpl, app.repository, token),
         Promise.all(selectedAssets.map(async ({ asset, abi: fileNameAbi }) => {
-          const apkPath = join(downloadDir, asset.name);
+          const apkPath = join(downloadDir, `${app.packageName}-${asset.name}`);
           const downloaded = await downloadApkImpl(fetchImpl, asset.browser_download_url, apkPath);
           const metadata = await inspectApkImpl(apkPath);
           assertApkMetadata(metadata, app);
