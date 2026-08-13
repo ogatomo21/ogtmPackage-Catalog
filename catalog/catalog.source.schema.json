@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://packages-api.ogtm.dev/catalog.source.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["apps"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "apps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["packageName", "displayName", "shortDescription", "repository"],
+        "properties": {
+          "packageName": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9_]*(\\.[A-Za-z0-9_]+)+$" },
+          "displayName": { "type": "string", "minLength": 1 },
+          "shortDescription": { "type": "string", "minLength": 1 },
+          "repository": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$" },
+          "iconUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "headerUrl": { "type": "string", "format": "uri", "pattern": "^https://" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "../catalog/catalog.source.schema.json",
+  "apps": [
+    {
+      "packageName": "net.ogatomo.tomoyansblog",
+      "displayName": "Tomoyan's Blog",
+      "shortDescription": "Tomoyan's Blogを快適に読むためのAndroidアプリ",
+      "repository": "ogatomo21/tomoyansblog-android"
+    },
+    {
+      "packageName": "net.ogatomo.developerOptions",
+      "displayName": "開発者向けオプション",
+      "shortDescription": "開発者向け設定とクイック設定タイルを扱うアプリ",
+      "repository": "ogatomo21/developerOptions"
+    },
+    {
+      "packageName": "net.ogatomo.karaplay",
+      "displayName": "KaraPlay",
+      "shortDescription": "曲のキーを変更して再生できるカラオケ練習アプリ",
+      "repository": "ogatomo21/KaraPlay"
+    },
+    {
+      "packageName": "net.ogatomo.tsuisekinow.android",
+      "displayName": "追跡なう",
+      "shortDescription": "追跡番号から荷物を自動追跡するAndroid共有プラグイン",
+      "repository": "ogatomo21/tsuisekinow-android"
+    },
+    {
+      "packageName": "net.ogatomo.docomofomastopmonitor",
+      "displayName": "docomoFomaStopMonitor",
+      "shortDescription": "NTTドコモFOMAサービス終了を監視するアプリ",
+      "repository": "ogatomo21/docomoFomaStopMonitor"
+    }
+  ]
+}

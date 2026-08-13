@@ -1,0 +1,14 @@
+{
+  "name": "ogtm-packages-catalog",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "generate": "node catalog/generate.mjs",
+    "check": "node catalog/check.mjs",
+    "test": "node --test catalog/test/**/*.test.mjs"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1"
+  }
+}
