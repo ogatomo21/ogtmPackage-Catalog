@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://packages-api.ogtm.dev/app-catalog.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "apps"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "apps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "packageName",
+          "displayName",
+          "shortDescription",
+          "descriptionMarkdown",
+          "repositoryUrl",
+          "minSdk",
+          "targetSdk",
+          "latestRelease"
+        ],
+        "properties": {
+          "packageName": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*(\\.[A-Za-z0-9_]+)+$"
+          },
+          "displayName": {
+            "type": "string",
+            "minLength": 1
+          },
+          "iconUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "headerUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://"
+          },
+          "shortDescription": {
+            "type": "string",
+            "minLength": 1
+          },
+          "descriptionMarkdown": {
+            "type": "string",
+            "minLength": 1
+          },
+          "repositoryUrl": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://github\\.com/"
+          },
+          "minSdk": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "targetSdk": {
+            "type": "integer",
+            "minimum": 23
+          },
+          "latestRelease": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "versionName",
+              "versionCode",
+              "publishedAt",
+              "releaseNotesMarkdown",
+              "apks"
+            ],
+            "properties": {
+              "versionName": {
+                "type": "string",
+                "minLength": 1
+              },
+              "versionCode": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "publishedAt": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "releaseNotesMarkdown": {
+                "type": "string"
+              },
+              "apks": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "abi",
+                    "url",
+                    "fileName",
+                    "sizeBytes",
+                    "sha256"
+                  ],
+                  "properties": {
+                    "abi": {
+                      "enum": [
+                        "arm64-v8a",
+                        "armeabi-v7a",
+                        "x86",
+                        "x86_64",
+                        "universal"
+                      ]
+                    },
+                    "url": {
+                      "type": "string",
+                      "format": "uri",
+                      "pattern": "^https://"
+                    },
+                    "fileName": {
+                      "type": "string",
+                      "pattern": "\\.apk$"
+                    },
+                    "sizeBytes": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
